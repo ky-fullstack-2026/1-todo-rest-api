@@ -9,9 +9,9 @@ export function todoReducer(state, action) {
         case ACTIONS.CREATE:
             return [action.todo, ...state]
 
-        case ACTIONS.TOGGLE:
+        case ACTIONS.UPDATE:
             return state.map((t) =>
-                t.id === action.id ? { ...t, isDone: !t.isDone } : t
+                t.id === action.todo.id ? action.todo : t
             )
 
         case ACTIONS.DELETE:

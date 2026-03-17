@@ -7,6 +7,8 @@ import jakarta.persistence.Id;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Getter
 @NoArgsConstructor
@@ -14,13 +16,20 @@ public class Todo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String title;
     private String content;
-    private Boolean completed;
 
-    public void update(String title,String content,boolean completed){
-        this.title=title;
+    private boolean done;
+    private LocalDateTime date;
+
+
+    public Todo(String content){
         this.content=content;
-        this.completed=completed;
+        this.done=false;
+        this.date=LocalDateTime.now();
+    }
+    public void update(String content,boolean done){
+
+        this.content=content;
+        this.done=done;
     }
 }

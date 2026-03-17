@@ -6,14 +6,17 @@ import lombok.Getter;
 @Getter
 public class TodoResponse {
     private Long id;
-    private  String title;
     private  String content;
-    private  boolean completed;
+    private  boolean done;
+    private Long date;
 
     public TodoResponse(Todo todo){
         this.id =todo.getId();
-        this.title=todo.getTitle();
         this.content=todo.getContent();
-        this.completed=todo.getCompleted();
+        this.done=todo.isDone();
+        this.date=todo.getDate()
+                .atZone(java.time.ZoneId.systemDefault())
+                .toInstant()
+                .toEpochMilli();
     }
 }

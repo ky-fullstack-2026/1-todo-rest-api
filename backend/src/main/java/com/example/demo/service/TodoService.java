@@ -20,8 +20,7 @@ public class TodoService {
     private final TodoRepository todoRepository;
 
     public TodoResponse create(CreateTodoRequest request){
-        Todo todo = new Todo();
-        todo.update(request.getTitle(),request.getContent(),false);
+        Todo todo = new Todo(request.getContent());
 
         Todo saved = todoRepository.save(todo);
 
@@ -46,9 +45,9 @@ public class TodoService {
                 .orElseThrow(()->new IllegalArgumentException("Todo not found:"+id));
 
         todo.update(
-                request.getTitle(),
+
                 request.getContent(),
-                request.isCompleted()
+                request.isDone()
         );
         return new TodoResponse(todo);
     }

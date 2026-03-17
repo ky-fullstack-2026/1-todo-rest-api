@@ -1,37 +1,41 @@
 import { useRef, createContext, useContext, useEffect, useReducer } from "react";
 import { ACTIONS } from "./actions";
-import { mockData } from "./mockData";
+
 import { todoReducer } from "./reducer";
-import { loadTodos, saveTodos } from "./storage";
+
 import { createTodoActions } from "./useTodoActions";
 
-
+import { getTodos } from "../api/todoApi";
 const TodoContext = createContext(null)
 
 export function TodoProvider({ children }) {
 
     const [todos, dispatch] = useReducer(todoReducer, [])
 
-    const idRef = useRef(3)
+    // const idRef = useRef(3)
 
     useEffect(()=>{
-        const saved = loadTodos()
-        const initial = saved?? mockData
 
-        dispatch({type:ACTIONS.INIT, todos:initial})
+        const fetchTodos= async()=>{
+            try {
+                const response = await getTodos()
 
-
-        const maxId = initial.reduce((max,t)=>Math.max(max,t.id),-1)
-
-        idRef.current=maxId+1
+                dispatch({
+                    type:ACTIONS.INIT,
+                    todos:response.data
+                })
+            } catch (error) {
+                console.error("할일 목록 조회 실패",error)
+            }
+        }
+  
+        fetchTodos()
 
     },[])
 
-    useEffect(()=>{
-        saveTodos(todos)
-    },[todos])
 
-    const actions = createTodoActions(dispatch,idRef)
+
+    const actions = createTodoActions(dispatch)
 
     return (
         <TodoContext.Provider value={{todos,...actions}}>

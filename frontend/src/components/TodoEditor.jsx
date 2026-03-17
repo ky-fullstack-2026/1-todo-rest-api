@@ -3,7 +3,7 @@ import "./TodoEditor.css"
 import { useTodoStore } from '../contexts/TodoContext'
 const TodoEditor = () => {
 
-  const { createTodo } = useTodoStore()
+  const { onCreate } = useTodoStore()
   const [content, setContent] = useState("")
   const inputRef = useRef(null)
 
@@ -16,8 +16,14 @@ const TodoEditor = () => {
   }
 
   const onSubmit = () => {
+
+    const trimed = content.trim()
+
+    if(!trimed) return
     
-    createTodo(content)
+    onCreate({
+      content:trimed
+    })
     setContent("")
     inputRef.current?.focus()
   }

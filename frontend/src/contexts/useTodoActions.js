@@ -1,25 +1,57 @@
 import { ACTIONS } from "./actions";
+import {
+    createTodo,
+    updateTodo,
+    deleteTodo
+} from '../api/todoApi'
 
-export function createTodoActions(dispatch, idRef) {
+export function createTodoActions(dispatch) {
 
     return {
+        onCreate:async(data)=>{
+            try {
+                const response = await createTodo(data)
 
-        createTodo: (content) => {
-
-            const text = (content ?? "").trim()
-            if (!text) return
-
-            const todo = {
-                id: idRef.current++,
-                isDone: false,
-                content: text,
-                date: new Date().getTime()
+                dispatch({
+                     type:ACTIONS.CREATE,
+                     todo:response.data
+                })
+                
+            } catch (error) {
+                console.error("할일 추가 실패",error)      
+                console.error("응답 데이터 ",error.response?.data)      
             }
-
-            dispatch({ type: ACTIONS.CREATE, todo })
         },
-        toggleTodo: (id) => dispatch({ type: ACTIONS.TOGGLE, id }),
-        deleteTodo: (id) => dispatch({ type: ACTIONS.DELETE, id })
+        onUpdate:async(id, data)=>{
+            try {
+                const response = await updateTodo(id,data)
+
+                dispatch({
+                     type:ACTIONS.UPDATE,
+                     todo:response.data
+                })
+                
+            } catch (error) {
+                console.error("할일 수정 실패",error)      
+                console.error("응답 데이터 ",error.response?.data)      
+            }
+        },
+        onDelete:async(id)=>{
+            try {
+
+                await deleteTodo(id)
+
+                dispatch({
+                     type:ACTIONS.DELETE,
+                     id
+                })
+                
+            } catch (error) {
+                console.error("할일 삭제 실패",error)      
+                console.error("응답 데이터 ",error.response?.data)      
+            }
+        },
+
     }
 
 }

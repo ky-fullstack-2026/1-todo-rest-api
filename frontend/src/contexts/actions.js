@@ -1,6 +1,6 @@
 export const ACTIONS={
         INIT:'INT',
         CREATE:'CREATE',
-        TOGGLE:'TOGGLE',
+        UPDATE:'UPDATE',
         DELETE:'DELETE'
 }

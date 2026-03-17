@@ -1,4 +1,4 @@
-.TodoItem{
+.TodoItem>div{
     display: flex;
     align-items: center;
     gap: 20px;
@@ -7,6 +7,9 @@
 }
 .TodoItem input{
     width: 20px;
+}
+.input-content{
+    flex: 1;
 }
 .TodoItem .content{
     flex:1
